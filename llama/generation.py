@@ -21,33 +21,32 @@ from llama.tokenizer import Tokenizer
 
 Role = Literal["system", "user", "assistant"]
 
-
 class Message(TypedDict):
     role: Role
     content: str
-
 
 class CompletionPrediction(TypedDict, total=False):
     generation: str
     tokens: List[str]  # not required
     logprobs: List[float]  # not required
 
-
 class ChatPrediction(TypedDict, total=False):
     generation: Message
     tokens: List[str]  # not required
     logprobs: List[float]  # not required
-
 
 Dialog = List[Message]
 
 B_INST, E_INST = "[INST]", "[/INST]"
 B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
 DEFAULT_SYSTEM_PROMPT = """\
-You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
-
-If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information."""
-
+You are a helpful, respectful and honest assistant. 
+Always answer as helpfully as possible, while being safe. 
+Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. 
+Please ensure that your responses are socially unbiased and positive in nature.
+If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. 
+If you don't know the answer to a question, please don't share false information.
+"""
 
 class Llama:
     @staticmethod
@@ -291,7 +290,6 @@ class Llama:
             {"generation": {"role": "assistant", "content": self.tokenizer.decode(t)}}
             for t in generation_tokens
         ]
-
 
 def sample_top_p(probs, p):
     probs_sort, probs_idx = torch.sort(probs, dim=-1, descending=True)
